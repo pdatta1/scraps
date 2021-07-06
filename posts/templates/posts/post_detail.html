@@ -1,0 +1,13 @@
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <h3> {{ post.title }}</h3>
+    <p>{{ post.content }}</p>
+    <h4>Contacts : </h4>
+    <p> Phone : {{ post.phone_number }} </p>
+    <p> Email Address: {{ post.email_address }}</p>
+
+</div>
+{% endblock %}

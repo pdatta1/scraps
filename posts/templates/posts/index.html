@@ -1,0 +1,100 @@
+{% extends "posts/base.html" %}
+{% block css %}
+{% load static %}
+{% load bootstrap3 %}
+<link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+{% endblock %}
+
+{% block content %}
+<style>
+.flex-child{
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+.card {
+     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+     transition: 0.3s;
+     height: 200px;
+     width: 550px;
+   }
+
+.card:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+ }
+
+ .container {
+     padding: 2px 16px;
+   }
+.row{
+    text-align: justify;
+    min-width: 412px;
+    width: 80%; /* it changes by screen size actually */
+    height: 90px;
+    padding: 100px;
+}
+.row:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+.col {
+    display: inline-block;
+}
+
+</style>
+<h2> RDU(Raleigh, Durham Area) SCRAPS</h2>
+<p style="color:red;">Login to Create Post</p>
+
+{% for post in post_list %}
+<div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="container">
+            <a href="{% url 'posts:post_detail' post.slug %}">
+                <h3>   {{ post.title}} </h3>
+            </a>
+           <p> {{ post.slug }}</p>
+           <p style="color:blue;"> -{{ post.created_on }}</p>
+            <p style="color:red;"> {{ post.get_city_name }}</p>
+        </div>
+      </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}
+
+{% block footer %}
+{% if is_paginated %}
+<div class="footer">
+<nav aria-label="Page navigation example">
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+    <li class="page-item disabled"><span>&laquo;</span></li>
+    {% endif %}
+
+    {% for i in paginator.page_range %}
+    {% if page_obj.number == i %}
+       <li class="page-item active"><span> {{ i }}<span class="sr-only">(current)</span></span></li>
+    {% else %}
+      <li><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+    {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span>&raquo;</span></li>
+    {% endif %}
+
+</ul>
+</nav>
+</div>
+{% endif %}
+{% endblock footer %}
+

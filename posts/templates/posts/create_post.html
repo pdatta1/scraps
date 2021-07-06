@@ -1,0 +1,29 @@
+{% extends "posts/base.html" %}
+
+
+{% block content %}
+{% load static %}
+{% block css %} {% endblock %}
+{% load crispy_forms_tags %}
+
+
+<div class="card">
+    <div class="container">
+        <div class="form">
+          <h2> Create Post </h2>
+            <form method="POST">
+              {% csrf_token %}
+                {{ post_form|crispy }}
+                  <button class="btn btn-primary" type="submit">Create</button>
+                   {% if messages %}
+                    <ul class="messages">
+                     {% for message in messages %}
+                       <li class="{{ message.tags }}"> {{message}} </li>
+                        {% endfor %}
+                    </ul>
+                   {% endif %}
+            </form>
+    </div>
+    </div>
+</div>
+{% endblock content %}
