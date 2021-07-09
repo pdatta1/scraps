@@ -19,7 +19,7 @@ CITIES = (
 
 
 class ScrapUser(AbstractUser):
-    post = models.ForeignKey('Post', null=True, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = 'ScrapUser'

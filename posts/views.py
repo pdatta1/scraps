@@ -8,7 +8,6 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
 
 
 def create_user(request):
@@ -65,10 +64,20 @@ def create_post(request):
     return render(request=request, template_name="posts/create_post.html", context={"post_form": post_form})
 
 
+@login_required
 def my_profile(request):
     logged_in_user = request.user
-    my_posts = ScrapUser.objects.filter(username=logged_in_user)
-    return render(request=request, template_name="posts/my_profile.html", context={"my_posts": my_posts})
+    my_posts = Post.objects.filter(author=logged_in_user)
+    return render(request=request, template_name='posts/my_profile.html', context={"my_posts": my_posts})
+
+
+# def my_profile(request):
+#   post_list = []
+#  logged_in_user = request.user
+# my_posts = ScrapUser.objects.filter(username=logged_in_user)
+# for post in my_posts:
+#   post_list.append(post)
+# return render(request=request, template_name="posts/my_profile.html", context={"my_posts": my_posts})
 
 
 class PostList(generic.ListView):
