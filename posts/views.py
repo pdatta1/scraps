@@ -1,5 +1,5 @@
 from django.views import generic
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, ScrapUser
 from django.shortcuts import render, redirect
 from posts.create_post import CreatePostForm
@@ -67,8 +67,41 @@ def create_post(request):
 @login_required
 def my_profile(request):
     logged_in_user = request.user
+    page = request.GET.get('page', 1)
     my_posts = Post.objects.filter(author=logged_in_user)
-    return render(request=request, template_name='posts/my_profile.html', context={"my_posts": my_posts})
+    paginator = Paginator(my_posts, 2)
+    try:
+        pages = paginator.page(page)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        pages = paginator.page(paginator.num_pages)
+    return render(request=request, template_name='posts/my_profile.html', context={"my_posts": pages})
+
+
+@login_required
+def edit_post(request, post_id):
+    post_id = int(post_id)
+    post = Post.objects.get(id=post_id)
+    if request.method == "POST":
+        form = CreatePostForm(request.POST or None, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('posts:succeed_edited')
+    else:
+        form = CreatePostForm()
+    return render(request=request, template_name='posts/edit_post.html', context={'edit_post': form})
+
+
+@login_required
+def succeed_edit_post(request):
+    return render(request=request, template_name='posts/succeed_edit_post.html')
+
+
+@login_required
+def delete_post(request, post_id):
+    post_id = int(post_id)
+    post = Post.objects.get(id=post_id)
 
 
 # def my_profile(request):

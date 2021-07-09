@@ -1,5 +1,9 @@
 {% extends "posts/base.html" %}
-
+{% block css %}
+{% load static %}
+{% load bootstrap3 %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+{% endblock css %}
 {% block content %}
 
 {% load crispy_forms_tags %}

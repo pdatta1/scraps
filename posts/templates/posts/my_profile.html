@@ -1,5 +1,9 @@
 {% extends "posts/base.html" %}
-
+{% block css %}
+{% load static %}
+{% load bootstrap3 %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+{% endblock css %}
 {% block content %}
 
 <h1 style="text-align: center; vertical-align: middle; line-width: -100px;"> My Profile </h1>
@@ -9,14 +13,14 @@
       <div class="card">
         <div class="container">
 
-           <h2 style=" text-align: center; vertical-align: middle; line-height: 60px;">   {{ posts.title }} </h2>
-            <h4 style=" text-align: center; color:blue;">   {{ posts.created_on }} </h4>
+           <h2>   {{ posts.title }} </h2>
+            <h4>   {{ posts.created_on }} </h4>
 
-            <a style="text-align:left;" href="#">
+            <a href="{% url 'posts:edit_post' posts.id%}">
                 <h3> edit</h3>
             </a>
 
-            <a style="padding:10px;" href="#">
+            <a  href="#">
                 <h3> delete</h3>
             </a>
 
@@ -28,3 +32,35 @@
 {% endfor %}
 
 {% endblock content %}
+
+{% block footer %}
+{% if my_posts.has_other_pages %}
+<div class="footer">
+<nav aria-label="Page navigation example">
+<ul class="pagination">
+    {% if my_posts.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{ my_posts.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+    <li class="page-item disabled"><span>&laquo;</span></li>
+    {% endif %}
+
+    {% for i in my_posts.paginator.page_range %}
+    {% if my_posts.number == i %}
+       <li class="page-item active"><span> {{ i }}<span class="sr-only">(current)</span></span></li>
+    {% else %}
+      <li><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+    {% endif %}
+    {% endfor %}
+
+    {% if my_posts.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ my_posts.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span>&raquo;</span></li>
+    {% endif %}
+
+</ul>
+</nav>
+</div>
+{% endif %}
+{% endblock footer %}
+

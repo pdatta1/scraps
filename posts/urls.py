@@ -10,6 +10,8 @@ urlpatterns = [
     path('create_post', views.create_post, name='create_post'),
     path('create_user', views.create_user, name='create_user'),
     path('login', views.login_user, name='login'),
+    path('edit_post/<int:post_id>', views.edit_post, name='edit_post'),
+    path('succeed_edit_post', views.succeed_edit_post, name='succeed_edited'),
     path('logout', views.logout_user, name='logout'),
     path('<slug:slug>', views.PostDetail.as_view(), name='post_detail'),
 

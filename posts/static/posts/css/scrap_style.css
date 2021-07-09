@@ -1,11 +1,11 @@
 .scrapnav{
-     background-color: #ADD8E6;
+     background-color: #ffffff;
      overflow: hidden;
      }
 
 .scrapnav a{
     float: left;
-    color: ADD8E6;
+    color: #000000;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -13,12 +13,12 @@
     }
 
 .scrapnav a.hover{
-    background-color: #0000FF;
+    background-color: #000000;
     color:black;
     }
 
 .scrapnav a.active{
-    background-color: #000FFF;
+    background-color: #000000;
     color: white;
     }
 
