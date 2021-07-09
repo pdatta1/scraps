@@ -9,6 +9,13 @@
         {% csrf_token %}
         {{ login_form|crispy }}
         <button class="btn btn-primary" type="submit">Login</button>
+        {% if messages %}
+                    <ul class="messages">
+                     {% for message in messages %}
+                       <li class="{{ message.tags }}"> {{message}} </li>
+                        {% endfor %}
+                    </ul>
+                   {% endif %}
     </form>
 </div>
 

@@ -1,6 +1,6 @@
 from django.views import generic
 from django.core.paginator import Paginator, EmptyPage
-from .models import Post
+from .models import Post, ScrapUser
 from django.shortcuts import render, redirect
 from posts.create_post import CreatePostForm
 from posts.create_user import CreateUserForm
@@ -55,7 +55,9 @@ def create_post(request):
     if request.method == 'POST':
         post_form = CreatePostForm(request.POST)
         if post_form.is_valid():
-            post_form.save()
+            fs = post_form.save(commit=False)
+            fs.author = request.user
+            fs.save()
             messages.success(request, "Post Created.")
             return redirect("posts:index")
     else:
@@ -63,9 +65,10 @@ def create_post(request):
     return render(request=request, template_name="posts/create_post.html", context={"post_form": post_form})
 
 
-def my_profile(request, id):
-    user = Post.author.objects.get(id=id)
-    return render(request=request, template_name="posts/my_profile", context={"user": user})
+def my_profile(request):
+    logged_in_user = request.user
+    my_posts = ScrapUser.objects.filter(username=logged_in_user)
+    return render(request=request, template_name="posts/my_profile.html", context={"my_posts": my_posts})
 
 
 class PostList(generic.ListView):

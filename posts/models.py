@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+import scrap_post.settings as scrapsettings
 
 
 STATUS = (
@@ -17,11 +18,18 @@ CITIES = (
 )
 
 
+class ScrapUser(AbstractUser):
+    post = models.ForeignKey('Post', null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'ScrapUser'
+
+
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True, verbose_name="Title")
     slug = models.SlugField(max_length=200, unique=True)
     city_name = models.IntegerField(choices=CITIES, default=0)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_post')
+    author = models.ForeignKey(scrapsettings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_post')
     updated = models.DateTimeField(auto_now=True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now=True)

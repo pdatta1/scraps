@@ -2,7 +2,7 @@ from django import forms
 from .models import Post
 from datetime import datetime
 from django.utils.text import slugify
-from django.contrib.auth.models import User
+from .models import ScrapUser
 
 
 class CreatePostForm(forms.ModelForm):
@@ -15,7 +15,6 @@ class CreatePostForm(forms.ModelForm):
         post = super(CreatePostForm, self).save(commit=False)
         post.title = self.cleaned_data['title']
         post.city_name = self.cleaned_data['city_name']
-        post.author = User.objects.get('username')
         post.content = self.cleaned_data['content']
         post.slug = slugify(post.title)
         post.status = self.cleaned_data['status']

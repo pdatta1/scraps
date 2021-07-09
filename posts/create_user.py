@@ -1,11 +1,11 @@
 from django.forms import forms
-from django.contrib.auth.models import User
+from .models import ScrapUser
 from django.contrib.auth.forms import UserCreationForm
 
 
 class CreateUserForm(UserCreationForm):
     class Meta:
-        model = User
+        model = ScrapUser
         fields = ('username', 'email', 'password1', 'password2')
 
     def save(self, commit=True):

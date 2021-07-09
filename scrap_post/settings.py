@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'mptt',
     'crispy_forms',
-    'posts.apps.PostsConfig',
+    'posts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -88,6 +88,11 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+
+# CHANGE USER AUTH MODEL
+AUTH_USER_MODEL = 'posts.ScrapUser'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

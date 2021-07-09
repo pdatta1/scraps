@@ -2,6 +2,19 @@
 
 {% block content %}
 
-<h1> My Profile </h1>
+<h1 style="text-align: center; vertical-align: middle; line-width: -100px;"> My Profile </h1>
+{% for posts in my_posts %}
+   <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="container">
+
+           <h2 style=" text-align: center; vertical-align: middle; line-height: 160px;">   {{ posts.post.title}} </h2>
+
+        </div>
+      </div>
+    </div>
+</div>
+{% endfor %}
 
 {% endblock content %}
