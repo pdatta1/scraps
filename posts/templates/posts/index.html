@@ -46,8 +46,12 @@
 }
 
 </style>
-<h2> Central North Carolina(Raleigh, Durham, etc) SCRAPS</h2>
-<p style="color:red; margin-left: 150px; margin-top: 30px;">Login to Create Post</p>
+<h2 style="margin-left: 80px;"> <b>Central North Carolina Scraps</b></h2>
+{% if user.is_authenticated %}
+{% else %}
+<p style="color:red; margin-left: 150px;"><b>Login to Create Post</b></p>
+{% endif %}
+
 
 {% for post in post_list %}
 <div class="row">
@@ -55,11 +59,12 @@
       <div class="card">
         <div class="container">
             <a href="{% url 'posts:post_detail' post.slug %}">
-                <h3>   {{ post.title}} </h3>
+                <h3 style=" word-wrap: break-word;">   {{ post.title}} </h3>
             </a>
            <p> {{ post.slug }}</p>
            <p style="color:blue;"> -{{ post.created_on }}</p>
             <p style="color:red;"> {{ post.get_city_name }}</p>
+
         </div>
       </div>
     </div>

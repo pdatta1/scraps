@@ -10,14 +10,14 @@
 {% load crispy_forms_tags %}
 
 
-<div class="card">
+<div style="margin: auto; margin-top: 20px;" class="card_create_post">
     <div class="container">
         <div class="form">
           <h2> Edit Post </h2>
             <form method="POST">
               {% csrf_token %}
-                {{ edit_post|crispy }}
-                  <button class="btn btn-primary" type="submit">Update</button>
+                {{ form.as_p }}
+                  <button style="padding: 10px; margin-top: 10px;" class="btn btn-primary" type="submit">Update</button>
 
 
                    {% if messages %}

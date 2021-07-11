@@ -9,7 +9,7 @@ class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = "__all__"
-        exclude = ['created_on', 'updated', 'slug', 'author']
+        exclude = ['created_on', 'updated', 'slug', 'author', 'saved']
 
     def save(self, commit=True):
         post = super(CreatePostForm, self).save(commit=False)
@@ -34,6 +34,10 @@ class EditPostForm(forms.ModelForm):
         fields = "__all__"
         exclude = ['created_on', 'updated', 'slug', 'author']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['content'].widget.attrs['style'] = 'width:800px; height: 400px;'
+
     def save(self, commit=True):
         post = super(EditPostForm, self).save(commit=False)
         post.title = self.cleaned_data['title']
@@ -49,7 +53,3 @@ class EditPostForm(forms.ModelForm):
         if commit:
             post.save()
         return post
-
-
-
-

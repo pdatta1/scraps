@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.urls import reverse
 
 
 def create_user(request):
@@ -69,7 +70,7 @@ def my_profile(request):
     logged_in_user = request.user
     page = request.GET.get('page', 1)
     my_posts = Post.objects.filter(author=logged_in_user)
-    paginator = Paginator(my_posts, 2)
+    paginator = Paginator(my_posts, 5)
     try:
         pages = paginator.page(page)
     except PageNotAnInteger:
@@ -79,19 +80,18 @@ def my_profile(request):
     return render(request=request, template_name='posts/my_profile.html', context={"my_posts": pages})
 
 
-@login_required
-def edit_post(request, post_id):
-    post_id = int(post_id)
-    post = Post.objects.get(id=post_id)
-    if request.method == "POST":
-        form = CreatePostForm(request.POST or None, instance=post)
-        if form.is_valid():
-            form.save()
-            return redirect('posts:succeed_edited')
-    else:
-        form = CreatePostForm()
-    return render(request=request, template_name='posts/edit_post.html', context={'edit_post': form})
+class PostUpdateView(generic.UpdateView):
+    model = Post
+    form_class = CreatePostForm
+    template_name = 'posts/edit_post.html'
 
+
+class PostDeleteView(generic.DeleteView):
+    model = Post
+    template_name = 'posts/delete_post.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse('posts:profile')
 
 @login_required
 def succeed_edit_post(request):
@@ -104,18 +104,9 @@ def delete_post(request, post_id):
     post = Post.objects.get(id=post_id)
 
 
-# def my_profile(request):
-#   post_list = []
-#  logged_in_user = request.user
-# my_posts = ScrapUser.objects.filter(username=logged_in_user)
-# for post in my_posts:
-#   post_list.append(post)
-# return render(request=request, template_name="posts/my_profile.html", context={"my_posts": my_posts})
-
-
 class PostList(generic.ListView):
     model = Post
-    paginate_by = 3
+    paginate_by = 10
     template_name = 'posts/index.html'
 
     queryset = Post.objects.filter(status=1).order_by('-created_on')

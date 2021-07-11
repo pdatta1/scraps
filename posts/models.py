@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import scrap_post.settings as scrapsettings
+from django.urls import reverse
 
 
 STATUS = (
@@ -15,6 +16,11 @@ CITIES = (
     (3, "Morrisville"),
     (4, "Apex"),
     (5, "Garner"),
+)
+
+Flags = (
+    (0, 'saved'),
+    (0, 'report'),
 )
 
 
@@ -36,6 +42,7 @@ class Post(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     phone_number = models.CharField(max_length=200, default='')
     email_address = models.CharField(max_length=200, default='')
+    saved = models.ManyToManyField(ScrapUser, null=True, related_name='add_saved')
 
     class Meta:
         ordering = ['-created_on']
@@ -45,5 +52,9 @@ class Post(models.Model):
     def __str__(self):
         return self.slug
 
-    def get_city_name(self):
-        return dict(CITIES).get(self.city_name)
+    def get_absolute_url(self):
+        return reverse('posts:index')
+
+
+
+

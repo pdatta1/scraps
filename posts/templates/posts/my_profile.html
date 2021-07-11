@@ -5,23 +5,33 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 {% endblock css %}
 {% block content %}
+<h1 style="text-align: left; margin-left: 100px; vertical-align: middle; line-width: -100px;"><b>My Profile</b> </h1>
 
-<h1 style="text-align: center; vertical-align: middle; line-width: -100px;"> My Profile </h1>
+<div style="margin-left: 80px;" class="card">
+    <div class="container">
+<h4> Change Password </h4>
+
+</div>
+</div>
+<hr>
+<h1 style="text-align: left; margin-left: 100px; vertical-align: middle; line-width: -100px;"> <b>My Posts</b> </h1>
+
 {% for posts in my_posts %}
    <div class="row">
     <div class="col">
       <div class="card">
         <div class="container">
-
-           <h2>   {{ posts.title }} </h2>
+         <a href="{% url 'posts:post_detail' posts.slug %}">
+           <h3>   {{ posts.title }} </h3>
+         </a>
             <h4>   {{ posts.created_on }} </h4>
 
-            <a href="{% url 'posts:edit_post' posts.id%}">
-                <h3> edit</h3>
+            <a href="{% url 'posts:edit_post' posts.pk %}">
+                <h4> edit</h4>
             </a>
 
-            <a  href="#">
-                <h3> delete</h3>
+            <a  href="{% url 'posts:delete_post' posts.pk %}">
+                <h4> delete</h4>
             </a>
 
 

@@ -9,7 +9,7 @@
 {% load crispy_forms_tags %}
 
 <div class="container py-5">
-    <h1> Create Account</h1>
+    <h1><b> Create Account </b></h1>
     <form method="POST">
         {% csrf_token %}
         {{ register_form | crispy }}
@@ -22,6 +22,11 @@
                     </ul>
         {% endif %}
     </form>
+    <p style="margin-top: 20px;"> Already have an account?
+        <a href="{% url 'posts:login' %}">
+            Login
+        </a>
+    </p>
 </div>
 
 

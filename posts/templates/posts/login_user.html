@@ -7,20 +7,21 @@
 {% block content %}
 
 {% load crispy_forms_tags %}
-<div class="container py-5">
-    <h1> Login </h1>
+<div  style="margin: auto;" class="container py-5">
+    <h2><b> Login </b></h2>
     <form method="POST">
         {% csrf_token %}
         {{ login_form|crispy }}
-        <button class="btn btn-primary" type="submit">Login</button>
+        <button  style="padding: 10px; margin-top: 10px;" class="btn btn-primary" type="submit">Login</button>
         {% if messages %}
                     <ul class="messages">
                      {% for message in messages %}
                        <li class="{{ message.tags }}"> {{message}} </li>
                         {% endfor %}
                     </ul>
-                   {% endif %}
+        {% endif %}
     </form>
+    <p style="margin-top: 20px;"> Don't have an Account? <a href="{% url 'posts:create_user' %}">Register Here</a></p>
 </div>
 
 {% endblock content %}
