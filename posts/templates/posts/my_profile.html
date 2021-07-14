@@ -21,6 +21,9 @@
     <div class="col">
       <div class="card">
         <div class="container">
+            {% if posts.status == 0 %}
+               <p> <b>This scrap is drafted</b></p>
+            {% endif %}
          <a href="{% url 'posts:post_detail' posts.slug %}">
            <h3>   {{ posts.title }} </h3>
          </a>

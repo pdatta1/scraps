@@ -10,7 +10,21 @@
 <div  style="margin: auto; margin-top: 20px; " class="card_detail">
     <h2> {{ post.title }}</h2>
     <p>{{ post.content }}</p>
+    {% if post.image1 %}
+    <img src = "{{ post.image1.url }}" class="img-responsive"/>
+    {% endif %}
+
+    {% if post.image2 %}
+        <img src = "{{ post.image2.url }}" class="img-responsive"/>
+    {% endif %}
+
+    {% if post.image3 %}
+        <img src = "{{ post.image3.url }}" class="img-responsive"/>
+    {% endif %}
+
 </div>
+
+
 
 <div style="margin: auto;" class="card_detail_contact">
     <h3> <u>Contacts </u>: </h3>

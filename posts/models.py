@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import scrap_post.settings as scrapsettings
+from django.template.defaultfilters import slugify
 from django.urls import reverse
-
 
 STATUS = (
     (0, "Draft"),
@@ -42,7 +42,9 @@ class Post(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     phone_number = models.CharField(max_length=200, default='')
     email_address = models.CharField(max_length=200, default='')
-    saved = models.ManyToManyField(ScrapUser, null=True, related_name='add_saved')
+    image1 = models.ImageField(upload_to='images/', null=True, blank=True, default='')
+    image2 = models.ImageField(upload_to='images/',null=True, blank=True, default='')
+    image3 = models.ImageField(upload_to='images/',null=True, blank=True, default='')
 
     class Meta:
         ordering = ['-created_on']
@@ -55,6 +57,7 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('posts:index')
 
-
+    def get_city_name(self):
+        return dict(CITIES).get(self.city_name)
 
 

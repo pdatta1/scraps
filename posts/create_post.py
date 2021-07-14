@@ -6,10 +6,11 @@ from .models import ScrapUser
 
 
 class CreatePostForm(forms.ModelForm):
+
     class Meta:
         model = Post
-        fields = "__all__"
-        exclude = ['created_on', 'updated', 'slug', 'author', 'saved']
+        fields = '__all__'
+        exclude = ['created_on', 'updated', 'slug', 'author']
 
     def save(self, commit=True):
         post = super(CreatePostForm, self).save(commit=False)

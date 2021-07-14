@@ -14,6 +14,7 @@ from django.urls import reverse
 def create_user(request):
     if request.method == 'POST':
         register_form = CreateUserForm(request.POST)
+
         if register_form.is_valid():
             user = register_form.save()
             login(request, user)
@@ -52,17 +53,22 @@ def logout_user(request):
 
 @login_required
 def create_post(request):
+
     if request.method == 'POST':
-        post_form = CreatePostForm(request.POST)
+        post_form = CreatePostForm(request.POST, request.FILES)
+
         if post_form.is_valid():
             fs = post_form.save(commit=False)
             fs.author = request.user
             fs.save()
             messages.success(request, "Post Created.")
             return redirect("posts:index")
+        else:
+            print(post_form.errors)
     else:
-        post_form = CreatePostForm
-    return render(request=request, template_name="posts/create_post.html", context={"post_form": post_form})
+        post_form = CreatePostForm()
+    return render(request=request,template_name="posts/create_post.html",
+                  context={'post_form': post_form,})
 
 
 @login_required
@@ -93,15 +99,10 @@ class PostDeleteView(generic.DeleteView):
     def get_success_url(self, **kwargs):
         return reverse('posts:profile')
 
+
 @login_required
 def succeed_edit_post(request):
     return render(request=request, template_name='posts/succeed_edit_post.html')
-
-
-@login_required
-def delete_post(request, post_id):
-    post_id = int(post_id)
-    post = Post.objects.get(id=post_id)
 
 
 class PostList(generic.ListView):
