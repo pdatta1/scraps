@@ -12,6 +12,9 @@ class CreatePostForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['created_on', 'updated', 'slug', 'author']
 
+    def __init(self, *args, **kwargs):
+        super(CreatePostForm, *args, **kwargs)
+
     def save(self, commit=True):
         post = super(CreatePostForm, self).save(commit=False)
         post.title = self.cleaned_data['title']

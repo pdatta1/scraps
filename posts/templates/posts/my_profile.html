@@ -9,13 +9,17 @@
 
 <div style="margin-left: 80px;" class="card">
     <div class="container">
-<h4> Change Password </h4>
+        <h4> <a href="{% url 'posts:change_password' %}">Change Password</a></h4>
+        <h4> Change EmailAddress</h4>
+        <h4> Delete Account </h4>
 
 </div>
 </div>
 <hr>
-<h1 style="text-align: left; margin-left: 100px; vertical-align: middle; line-width: -100px;"> <b>My Posts</b> </h1>
-
+<h1 style="text-align: left; margin-left: 100px; vertical-align: middle; line-width: -100px;"> <b>My Scraps</b> </h1>
+      {% if not my_posts %}
+      <img style="margin-left: 120px;" width="200px" height="200px" src="https://img.icons8.com/ios/50/000000/empty-box.png"/>
+      {% endif %}
 {% for posts in my_posts %}
    <div class="row">
     <div class="col">
@@ -42,6 +46,7 @@
       </div>
     </div>
 </div>
+<br/>
 {% endfor %}
 
 {% endblock content %}

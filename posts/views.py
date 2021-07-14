@@ -9,8 +9,16 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.contrib.auth.forms import PasswordResetForm
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail, BadHeaderError
 
-
+@xframe_options_exempt
 def create_user(request):
     if request.method == 'POST':
         register_form = CreateUserForm(request.POST)
@@ -25,6 +33,7 @@ def create_user(request):
     return render(request=request, template_name="posts/create_user.html", context={"register_form": register_form})
 
 
+@xframe_options_exempt
 def login_user(request):
     if request.method == "POST":
         login_form = AuthenticationForm(request, data=request.POST)
@@ -45,6 +54,7 @@ def login_user(request):
 
 
 @login_required
+@xframe_options_exempt
 def logout_user(request):
     logout(request)
     messages.info(request, "Logged out.")
@@ -52,6 +62,7 @@ def logout_user(request):
 
 
 @login_required
+@xframe_options_exempt
 def create_post(request):
 
     if request.method == 'POST':
@@ -67,11 +78,12 @@ def create_post(request):
             print(post_form.errors)
     else:
         post_form = CreatePostForm()
-    return render(request=request,template_name="posts/create_post.html",
-                  context={'post_form': post_form,})
+    return render(request=request, template_name="posts/create_post.html",
+                  context={'post_form': post_form, })
 
 
 @login_required
+@xframe_options_exempt
 def my_profile(request):
     logged_in_user = request.user
     page = request.GET.get('page', 1)
@@ -101,6 +113,7 @@ class PostDeleteView(generic.DeleteView):
 
 
 @login_required
+@xframe_options_exempt
 def succeed_edit_post(request):
     return render(request=request, template_name='posts/succeed_edit_post.html')
 
@@ -116,3 +129,34 @@ class PostList(generic.ListView):
 class PostDetail(generic.DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
+
+
+@login_required
+@xframe_options_exempt
+def change_password(request):
+    if request.method == 'POST':
+        password_change_form = PasswordResetForm(request.POST)
+        if password_change_form.is_valid():
+            data = password_change_form.cleaned_data['email']
+            scrap_user = ScrapUser.objects.filter(Q(email=data))
+            if scrap_user.exists():
+                for user in scrap_user:
+                    subject = 'Change Your Password'
+                    email_template_name = 'posts/password_change/password_reset_email.txt'
+                    content = {
+                        'email': user.email,
+                        'domain': '192.168.1.160:8000',
+                        'site_name': 'ScrapSite',
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'user': user,
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http',
+                    }
+                    scrap_email = render_to_string(email_template_name, content)
+                    try:
+                        send_mail(subject, scrap_email, 'adminscrap@gmail.com',[user.email], fail_silently=False)
+                    except BadHeaderError:
+                        messages.error('Invalid Header Found')
+                    return redirect('password_change_done')
+    password_change_form = PasswordResetForm()
+    return render(request=request, template_name='posts/password_change/password_change.html', context={'password_change_form': password_change_form})

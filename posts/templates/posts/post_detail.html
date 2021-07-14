@@ -12,14 +12,19 @@
     <p>{{ post.content }}</p>
     {% if post.image1 %}
     <img src = "{{ post.image1.url }}" class="img-responsive"/>
-    {% endif %}
+    <br/>
 
+    {% endif %}
     {% if post.image2 %}
         <img src = "{{ post.image2.url }}" class="img-responsive"/>
+        <br/>
+
     {% endif %}
 
     {% if post.image3 %}
         <img src = "{{ post.image3.url }}" class="img-responsive"/>
+        <br/>
+
     {% endif %}
 
 </div>

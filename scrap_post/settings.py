@@ -94,10 +94,8 @@ DATABASES = {
     }
 }
 
-
 # CHANGE USER AUTH MODEL
 AUTH_USER_MODEL = 'posts.ScrapUser'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -138,3 +136,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CLICK JACKING PROTECTION
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
+
+#email config
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
