@@ -26,7 +26,7 @@ Flags = (
 
 class ScrapUser(AbstractUser):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
-
+    phone_number = models.CharField(max_length=11, null=False, unique=True, default='')
     class Meta:
         verbose_name = 'ScrapUser'
 

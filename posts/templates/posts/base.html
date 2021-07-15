@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
  <head>
 {% load bootstrap3 %}
 {% load static %}
-{% block css %}{% endblock %}
+{% block css %}{% endblock css %}
+
+{% block style %}{% endblock style %}
 
 
 <link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>

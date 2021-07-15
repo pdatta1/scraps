@@ -18,7 +18,8 @@ h1 {
     text-align: center;
 }
 
-input {
+
+input [type="text"]{
     padding: 10px;
     width: 100%;
     font-size: 17px;
@@ -26,7 +27,17 @@ input {
     border: 1px solid #aaaaaa;
     border-radius: 10px;
     -webkit-appearance: none;
-    }
+}
+
+input[type="email"]{
+    padding: 10px;
+    width: 80%;
+    font-size: 17px;
+    font-family: Raleway;
+    border: 1px solid #aaaaaa;
+    border-radius: 10px;
+    -webkit-appearance: none;
+}
 
 .tab input:focus {
     border: 1px solid #6a1b9a !important;
@@ -35,6 +46,16 @@ input {
 
 input.invalid {
     border: 1px solid #e03a0666;
+}
+
+.email_address_change{
+   padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    font-family: Raleway;
+    border: 1px solid #aaaaaa;
+    border-radius: 10px;
+    -webkit-appearance: none;
 }
 
 
