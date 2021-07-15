@@ -26,7 +26,7 @@ Flags = (
 
 class ScrapUser(AbstractUser):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
-    phone_number = models.CharField(max_length=11, null=False, unique=True, default='')
+
     class Meta:
         verbose_name = 'ScrapUser'
 
@@ -43,8 +43,8 @@ class Post(models.Model):
     phone_number = models.CharField(max_length=200, default='')
     email_address = models.CharField(max_length=200, default='')
     image1 = models.ImageField(upload_to='images/', null=True, blank=True, default='')
-    image2 = models.ImageField(upload_to='images/',null=True, blank=True, default='')
-    image3 = models.ImageField(upload_to='images/',null=True, blank=True, default='')
+    image2 = models.ImageField(upload_to='images/', null=True, blank=True, default='')
+    image3 = models.ImageField(upload_to='images/', null=True, blank=True, default='')
 
     class Meta:
         ordering = ['-created_on']
@@ -59,5 +59,3 @@ class Post(models.Model):
 
     def get_city_name(self):
         return dict(CITIES).get(self.city_name)
-
-
