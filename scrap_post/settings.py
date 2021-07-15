@@ -94,11 +94,7 @@ WSGI_APPLICATION = 'scrap_post.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'scrap_post',
-        'USER': 'zeusgod',
-        'PASSWORD': 'Hgt.22-3patrick',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'HOST': 'mysql://bd0e03552afbfc:1b3877e5@us-cdbr-east-04.cleardb.com/heroku_aab20e716d1a1aa?reconnect=true',
     }
 }
 
