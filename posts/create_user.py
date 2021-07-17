@@ -1,6 +1,7 @@
 from django.forms import forms
 from .models import ScrapUser
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 
 class CreateUserForm(UserCreationForm):
@@ -10,7 +11,8 @@ class CreateUserForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(CreateUserForm, self).save(commit=False)
+        user.username = self.cleaned_data['username']
         user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
+       
+        user.save()
         return user

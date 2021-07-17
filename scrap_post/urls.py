@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('d0oai32492384h2hdiea674t2qeyrgh2w63427/', admin.site.urls),
     path('', include('posts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('password_change/done/', auth_view.PasswordResetView.as_view(template_name='posts/password_change/password_change_done.html'), name='password_change_done'),

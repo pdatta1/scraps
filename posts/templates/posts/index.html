@@ -61,7 +61,6 @@
             <a href="{% url 'posts:post_detail' post.slug %}">
                 <h3 style=" word-wrap: break-word;">   {{ post.title}} </h3>
             </a>
-           <p> {{ post.slug }}</p>
            <p style="color:blue;"> -{{ post.created_on }}</p>
             <p style="color:red;"><b> {{ post.get_city_name }}</b></p>
 

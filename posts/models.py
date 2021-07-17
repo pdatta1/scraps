@@ -29,6 +29,7 @@ class ScrapUser(AbstractUser):
 
     class Meta:
         verbose_name = 'ScrapUser'
+        unique_together = ('email',)
 
 
 class Post(models.Model):

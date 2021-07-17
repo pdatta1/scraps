@@ -21,9 +21,10 @@ from django.core.mail import send_mail, BadHeaderError
 @xframe_options_exempt
 def create_user(request):
     if request.method == 'POST':
-        register_form = CreateUserForm(request.POST)
+        register_form = CreateUserForm(request.POST) 
 
         if register_form.is_valid():
+
             user = register_form.save()
             login(request, user)
             messages.success(request, "Account Created.")
@@ -112,6 +113,15 @@ class PostDeleteView(generic.DeleteView):
         return reverse('posts:profile')
 
 
+def get_user_ip(request):
+    user_ip = request.META.get('HTTP_X_FORWARDED_FOR')
+    if user_ip:
+        ip = user_ip.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    print(ip)
+
+
 @login_required
 @xframe_options_exempt
 def succeed_edit_post(request):
@@ -124,8 +134,7 @@ class PostList(generic.ListView):
     template_name = 'posts/index.html'
 
     queryset = Post.objects.filter(status=1).order_by('-created_on')
-
-
+  
 class PostDetail(generic.DetailView):
     model = Post
     template_name = 'posts/post_detail.html'

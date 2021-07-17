@@ -22,11 +22,9 @@ TEMPLATES_DIRS = [os.path.join(PROJECT_PATH, 'templates/')]
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR, 'static'),
-)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -36,11 +34,10 @@ STATICFILES_DIRS = (
 file = os.path.join(PROJECT_PATH, 'etc/secret_key.txt')
 with open(file) as f:
     SECRET_KEY = f.read().strip()
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.160', '192.168.1.211']
+ALLOWED_HOSTS = ['18.117.103.190']
 
 # Application definition
 
@@ -55,11 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -94,7 +91,11 @@ WSGI_APPLICATION = 'scrap_post.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'mysql://bd0e03552afbfc:1b3877e5@us-cdbr-east-04.cleardb.com/heroku_aab20e716d1a1aa?reconnect=true',
+        'HOST': 'scrappost.cpgnyvpdkc9m.us-east-2.rds.amazonaws.com',
+        'NAME': 'scrap_post',
+        'USER': 'admin',
+        'PASSWORD': 'hgt.22-3admin',
+        'PORT': '3306',
     }
 }
 
@@ -124,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
@@ -148,10 +149,15 @@ X_FRAME_OPTIONS = "DENY"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 3600
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_HSTS_PRELOAD = False
+
+
+CORS_REPLACE_HTTPS_REFERER      = False
+HOST_SCHEME                     = "http://"
+SECURE_PROXY_SSL_HEADER         = None
+SECURE_SSL_REDIRECT             = False
+SESSION_COOKIE_SECURE           = False
+CSRF_COOKIE_SECURE              = False
+SECURE_HSTS_SECONDS             = None
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
+SECURE_FRAME_DENY               = False
