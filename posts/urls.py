@@ -19,8 +19,4 @@ urlpatterns = [
     path('succeed_edit_post', views.succeed_edit_post, name='succeed_edited'),
     path('logout', views.logout_user, name='logout'),
     path('<slug:slug>', views.PostDetail.as_view(), name='post_detail'),
-
-
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

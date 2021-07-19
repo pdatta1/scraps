@@ -12,18 +12,41 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-secondary',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
+
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 TEMPLATES_DIRS = [os.path.join(PROJECT_PATH, 'templates/')]
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 STATIC_URL = '/static/'
+
+
+
+#S3 BUCKET CONFIG
+AWS_STORAGE_BUCKET_NAME = 'scraps3'
+AWS_ACCESS_KEY_ID = 'AKIA6DXHTVMYQOQ5RTEV'
+AWS_SECRET_ACCESS_KEY = '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'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_REGION_NAME = 'eu-west-2'
 
 
 
@@ -34,14 +57,16 @@ STATIC_URL = '/static/'
 file = os.path.join(PROJECT_PATH, 'etc/secret_key.txt')
 with open(file) as f:
     SECRET_KEY = f.read().strip()
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['18.117.103.190']
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+ALLOWED_HOSTS = ['scrapnc.com','www.scrapnc.com','18.222.68.55']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'bootstrap3',
     'mptt',
     'crispy_forms',
@@ -63,6 +88,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'scrap_post.urls'
@@ -149,15 +176,15 @@ X_FRAME_OPTIONS = "DENY"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
-SECURE_HSTS_PRELOAD = False
 
 
+SECURE_HSTS_PRELOAD             = False
 CORS_REPLACE_HTTPS_REFERER      = False
 HOST_SCHEME                     = "http://"
 SECURE_PROXY_SSL_HEADER         = None
 SECURE_SSL_REDIRECT             = False
 SESSION_COOKIE_SECURE           = False
 CSRF_COOKIE_SECURE              = False
-SECURE_HSTS_SECONDS             = None
+SECURE_HSTS_SECONDS             = False
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
 SECURE_FRAME_DENY               = False

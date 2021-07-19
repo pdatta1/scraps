@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('d0oai32492384h2hdiea674t2qeyrgh2w63427/', admin.site.urls),
     path('', include('posts.urls')),
+    path('s3direct/', include('s3direct.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('password_change/done/', auth_view.PasswordResetView.as_view(template_name='posts/password_change/password_change_done.html'), name='password_change_done'),
     path('password_change/<uidb64>/<token>/', auth_view.PasswordResetConfirmView.as_view(template_name='posts/password_change/password_change_confirm.html'), name='password_change_confirm'),
@@ -28,3 +31,7 @@ urlpatterns = [
 
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -16,12 +16,18 @@
         {{ register_form | crispy }}
         <button style="padding: 20px;" class="btn btn-primary" type="submit">Create Account</button>
         {% if messages %}
-                    <ul class="messages">
-                     {% for message in messages %}
-                       <li style="color: red;" class="{{ message.tags }}"> {{message}} </li>
-                        {% endfor %}
-                    </ul>
-        {% endif %}
+        <div style="padding: 10px; margin-top: 10px;" class="container-fluid p-0">
+         {% for message in messages %}
+           <div class="alert {{ message.tags }} alert-dismissible" role="alert"> 
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+           </button>
+           {{message}}
+        </div>
+    </div>
+        {% endfor %}
+     
+{% endif %}
     </form>
     <p style="margin-top: 20px;"> Already have an account?
         <a href="{% url 'posts:login' %}">

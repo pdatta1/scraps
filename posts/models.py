@@ -4,6 +4,7 @@ import scrap_post.settings as scrapsettings
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 
+
 STATUS = (
     (0, "Draft"),
     (1, "Publish"),
@@ -31,6 +32,8 @@ class ScrapUser(AbstractUser):
         verbose_name = 'ScrapUser'
         unique_together = ('email',)
 
+def user_directory_path(instance, filename):
+    return 'posts/{0}/{0}'.format(instance.id, filename)
 
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True, verbose_name="Title")
@@ -43,9 +46,9 @@ class Post(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     phone_number = models.CharField(max_length=200, default='')
     email_address = models.CharField(max_length=200, default='')
-    image1 = models.ImageField(upload_to='images/', null=True, blank=True, default='')
-    image2 = models.ImageField(upload_to='images/', null=True, blank=True, default='')
-    image3 = models.ImageField(upload_to='images/', null=True, blank=True, default='')
+    image1 = models.ImageField(upload_to='media', null=True, blank=True, default='')
+    image2 = models.ImageField(upload_to='media', null=True, blank=True, default='')
+    image3 = models.ImageField(upload_to='media', null=True, blank=True, default='')
 
     class Meta:
         ordering = ['-created_on']
