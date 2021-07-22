@@ -3,7 +3,8 @@ from django.contrib.auth.models import AbstractUser
 import scrap_post.settings as scrapsettings
 from django.template.defaultfilters import slugify
 from django.urls import reverse
-
+from uuid import uuid4
+import os
 
 STATUS = (
     (0, "Draft"),
@@ -31,9 +32,22 @@ class ScrapUser(AbstractUser):
     class Meta:
         verbose_name = 'ScrapUser'
         unique_together = ('email',)
+def images_path(path):
+    def wrapper(instance, filename):
+        ext = filename.split('.')[-1]
+
+        if instance.pk:
+            filename = '{}.{}'.format(instance.pk, ext)
+        else:
+            filename = '{}.{}'.format(uuid4().hex, ext)
+        return os.path.join(path, filename)
+    return wrapper 
+
 
 def user_directory_path(instance, filename):
-    return 'posts/{0}/{0}'.format(instance.id, filename)
+    return '{0}/{0}'.format(instance.id, images_path(filename))
+
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True, verbose_name="Title")
@@ -46,9 +60,9 @@ class Post(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     phone_number = models.CharField(max_length=200, default='')
     email_address = models.CharField(max_length=200, default='')
-    image1 = models.ImageField(upload_to='media', null=True, blank=True, default='')
-    image2 = models.ImageField(upload_to='media', null=True, blank=True, default='')
-    image3 = models.ImageField(upload_to='media', null=True, blank=True, default='')
+    image1 = models.ImageField(upload_to='upload/{}'.format(user_directory_path), null=True, blank=True, default='')
+    image2 = models.ImageField(upload_to='upload/{}'.format(user_directory_path), null=True, blank=True, default='')
+    image3 = models.ImageField(upload_to='upload/{}'.format(user_directory_path), null=True, blank=True, default='')
 
     class Meta:
         ordering = ['-created_on']
@@ -63,3 +77,4 @@ class Post(models.Model):
 
     def get_city_name(self):
         return dict(CITIES).get(self.city_name)
+

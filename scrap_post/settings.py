@@ -25,7 +25,6 @@ MESSAGE_TAGS = {
 
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
@@ -44,9 +43,8 @@ STATIC_URL = '/static/'
 AWS_STORAGE_BUCKET_NAME = 'scraps3'
 AWS_ACCESS_KEY_ID = 'AKIA6DXHTVMYQOQ5RTEV'
 AWS_SECRET_ACCESS_KEY = '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'
-
+AWS_QUERYSTRING_AUTH = False
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_REGION_NAME = 'eu-west-2'
 
 
 
@@ -61,7 +59,7 @@ with open(file) as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['scrapnc.com','www.scrapnc.com','18.222.68.55']
+ALLOWED_HOSTS = ['scrapnc.com','www.scrapnc.com','3.135.192.249']
 
 # Application definition
 
@@ -178,13 +176,14 @@ EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
 
 
-SECURE_HSTS_PRELOAD             = False
-CORS_REPLACE_HTTPS_REFERER      = False
-HOST_SCHEME                     = "http://"
-SECURE_PROXY_SSL_HEADER         = None
-SECURE_SSL_REDIRECT             = False
-SESSION_COOKIE_SECURE           = False
-CSRF_COOKIE_SECURE              = False
-SECURE_HSTS_SECONDS             = False
-SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
-SECURE_FRAME_DENY               = False
+SECURE_HSTS_PRELOAD             = True
+CORS_REPLACE_HTTPS_REFERER      = True
+HOST_SCHEME                     = "https://"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT             = True
+SESSION_COOKIE_SECURE           = True
+CSRF_COOKIE_SECURE              = True
+SECURE_HSTS_SECONDS             = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
+SECURE_FRAME_DENY               = True
+
