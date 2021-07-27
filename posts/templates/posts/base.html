@@ -30,10 +30,8 @@
          <a class="#" href="{% url 'posts:profile' %}">Welcome, {{user.username}}</a>
          <a class="#" href="{% url 'posts:create_post' %}">Create Post</a>
          <a class="#" href="{% url 'posts:logout' %}">Logout</a>
-         <a class="#" href="#">Tutorials</a>
-         <a class="#" href="#">Donate</a>
          {% else %}
-         <a class="active" href="{% url 'posts:index' %}">Scrapsss</a>
+         <a class="active" href="{% url 'posts:index' %}">Scraps</a>
          <a class="#" href="{% url 'posts:login' %}">Login</a>
          <a class="#" href="{% url 'posts:create_user' %}">Create Account</a>
 

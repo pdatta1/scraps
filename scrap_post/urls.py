@@ -23,10 +23,10 @@ urlpatterns = [
     path('d0oai32492384h2hdiea674t2qeyrgh2w63427/', admin.site.urls),
     path('', include('posts.urls')),
     path('s3direct/', include('s3direct.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('password_change/done/', auth_view.PasswordResetView.as_view(template_name='posts/password_change/password_change_done.html'), name='password_change_done'),
-    path('password_change/<uidb64>/<token>/', auth_view.PasswordResetConfirmView.as_view(template_name='posts/password_change/password_change_confirm.html'), name='password_change_confirm'),
-    path('change/done', auth_view.PasswordResetCompleteView.as_view(template_name='posts/password_change_complete'), name='password_change_complete'),
+    #path('accounts/', include('django.contrib.auth.urls')),
+    path('password_reset/done/', auth_view.PasswordResetView.as_view(template_name='posts/password_change/password_reset_done.html'), name='password_reset_done'),
+    path('password_reset/<uidb64>/<token>/', auth_view.PasswordResetConfirmView.as_view(template_name='posts/password_change/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset/done/', auth_view.PasswordResetCompleteView.as_view(template_name='posts/password_change/password_reset_complete.html'), name='password_reset_complete'),
 
 
 

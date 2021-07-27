@@ -1,6 +1,6 @@
-from django.forms import forms
+from django import forms
 from .models import ScrapUser
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib import messages
 
 
@@ -16,3 +16,20 @@ class CreateUserForm(UserCreationForm):
        
         user.save()
         return user
+
+
+class EditUserForm(UserChangeForm):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(label='Password', widget=forms.HiddenInput(), help_text='Minimum 8 characters.', required=False)
+
+    class Meta:
+        model = ScrapUser
+        help_texts = {
+            'username': None,
+            'password1': None,
+            'password2': None,
+            'password': None
+        }
+        fields = ('email',)
+        exclude = ['password', 'last-login', 'is_superuser', 'username', 'is_staff', 'is_active', 'date_joined',
+                   'post_id']

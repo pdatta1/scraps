@@ -10,16 +10,14 @@
 {% load crispy_forms_tags %}
 
 <div style="margin: auto; margin-top: 20px;" class="card">
-  <div class="container">
         <div class="form">
-          <h2> Delete Post </h2>
+          <h2 style="margin-left: 100px;"> Delete Post ?</h2>
             <form method="POST">
                 {% csrf_token %}
-              <p> Are you sure you want to delete "{{ object }}"? </p>
-              <input type="submit" value="confirm"/>
+              <p style="margin-left: 50px;"> Are you sure you want to delete "{{ object }}"? </p>
+              <Button style="margin-left: 50px;" class="btn btn-primary" type="submit" value="confirm">Delete?</Button>
             </form>
           </div>
-    </div>
 
 </div>
 

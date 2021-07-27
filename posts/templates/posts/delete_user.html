@@ -1,0 +1,27 @@
+{% extends "posts/base.html" %}
+{% block css %}
+{% load static %}
+{% load bootstrap3 %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+{% endblock css %}
+ {% block content %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+<div style="margin: auto; margin-top: 20px;" class="card">
+        <div class="form">
+          <h2 style="margin-left: 100px;"> Delete Account?</h2>
+            <form method="POST">
+                {% csrf_token %}
+              <p style="margin-left: 40px;"><b>Hey {{user.username}},</b></p>        
+              <p style="margin-left: 40px;"> Are you sure you want to delete? </p>
+              <p style="margin-left: 40px;"> Everything will be deleted including all posts made by this account.</p>
+              <p style="margin-left: 40px;"> Click the Delete Button to Proceed.</p>
+              <button style="margin-left: 40px;" class="btn btn-primary" type="submit" value="confirm">Delete</button>
+            </form>
+    </div>
+
+</div>
+
+{% endblock content %}

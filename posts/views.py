@@ -3,7 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, ScrapUser
 from django.shortcuts import render, redirect
 from posts.create_post import CreatePostForm
-from posts.create_user import CreateUserForm
+from posts.create_user import CreateUserForm, EditUserForm 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -140,7 +140,25 @@ class PostDetail(generic.DetailView):
     template_name = 'posts/post_detail.html'
 
 
-@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        editform = EditUserForm(request.POST, instance=request.user)
+        if editform.is_valid():
+            editform.save()
+            return redirect('posts:profile')
+    else:
+        editform = EditUserForm(instance=request.user)
+    return render(request=request, template_name='posts/edit_profile.html', context={'form':editform})
+
+
+def delete_user(request):
+    if request.method == 'POST':
+        user = ScrapUser.objects.filter(username=request.user)
+        user.delete()
+        return redirect('posts:index')
+    return render(request=request, template_name='posts/delete_user.html')
+
+
 @xframe_options_exempt
 def change_password(request):
     if request.method == 'POST':
@@ -154,7 +172,7 @@ def change_password(request):
                     email_template_name = 'posts/password_change/password_reset_email.txt'
                     content = {
                         'email': user.email,
-                        'domain': '192.168.1.160:8000',
+                        'domain': 'https://www.scrapnc.com',
                         'site_name': 'ScrapSite',
                         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                         'user': user,
@@ -163,9 +181,10 @@ def change_password(request):
                     }
                     scrap_email = render_to_string(email_template_name, content)
                     try:
-                        send_mail(subject, scrap_email, 'adminscrap@gmail.com',[user.email], fail_silently=False)
+                        send_mail(subject, scrap_email, 'ncscrapsite@gmail.com',[user.email], fail_silently=False)
                     except BadHeaderError:
                         messages.error('Invalid Header Found')
-                    return redirect('password_change_done')
+                    logout(request)
+                    return redirect('password_reset_done')
     password_change_form = PasswordResetForm()
-    return render(request=request, template_name='posts/password_change/password_change.html', context={'password_change_form': password_change_form})
+    return render(request=request, template_name='posts/password_change/password_reset.html', context={'password_change_form': password_change_form})

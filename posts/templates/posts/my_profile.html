@@ -7,15 +7,119 @@
 
 {% block content %}
 {% load crispy_forms_tags %}
+
+<style>
+
+.flex-child{
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+.text_align{
+  margin-left: 80px;
+}
+.card_profile {
+     box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2);
+     transition: 0.3s;
+     height: 200px;
+     width: 550px;
+   }
+
+.card_profile:hover {
+      box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2);
+ }
+
+ .container {
+     padding: 2px 16px;
+   }
+.row{
+    text-align: justify;
+    min-width: 412px;
+    width: 80%; /* it changes by screen size actually */
+    height: 90px;
+    padding: 100px;
+}
+.row:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+.col {
+    display: inline-block;
+}
+
+.center_heading{
+   margin-left: 80px;
+}
+.center_p{
+  margin-left: 80px;
+}
+
+@media screen and (max-width: 600px){
+  .row{
+    text-align: justify;
+    min-width: 412px;
+    width: 80%; /* it changes by screen size actually */
+    height: 90px;
+    padding: 10px;
+    padding-bottom: 200px;
+}
+.row:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+.center_heading{
+  margin-left: 10%;
+}
+.center_p{
+  margin-left: 120px;
+}
+h2{
+  font-size: 20px;
+
+}
+
+h4{
+  font-size: 20px;
+  color: red;
+}
+
+.card_profile {
+  box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  min-height: 200px;
+  width: 430px;
+  max-width : 100%;
+}
+.card_profile-text {
+word-wrap: break-word;
+}
+
+.card_profile:hover {
+   box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2);
+}
+.text_align{
+  margin-left: 80px;
+}
+
+}
+
+
+
+</style>
+
+</style>
 <h1 style="text-align: left; margin-left: 100px; vertical-align: middle; line-width: -100px;"><b>My Profile</b> </h1>
 
-<div style="margin-left: 80px;" class="card">
+<div class="card_profile">\
+  <div class="text_align">
     <div class="container">
         <h4> <a href="{% url 'posts:change_password' %}">Change Password</a></h4>
-        <h4> Change EmailAddress</h4>
-        <h4> Delete Account </h4>
-
-</div>
+        <h4>  <a href="{% url 'posts:edit_user' %} ">Change EmailAddress</a></h4>
+        <h4> <a href="{% url 'posts:delete_user' %}">Delete Account</a></h4>
+      </div>
+  </div>    
 </div>
 <hr>
 <h1 style="text-align: left; margin-left: 100px; vertical-align: middle; line-width: -100px;"> <b>My Scraps</b> </h1>

@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: django-profanity-check
+Version: 0.1.0
+Summary: A Django template filter that wraps around profanity-check
+Home-page: https://github.com/rnegron/django-profanity-check
+License: MIT
+Keywords: Django,profanity,template-filter
+Author: Raúl Negrón
+Author-email: raul.esteban.negron@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Requires-Dist: profanity-check (>=1.0,<2.0)
+Project-URL: Repository, https://github.com/rnegron/django-profanity-check
+Description-Content-Type: text/markdown
+
+## django-profanity-check
+
+A Django template filter that wraps around [profanity-check](https://github.com/vzhou842/profanity-check).
+
+**Note**: `numpy`, `scipy`, and `scikit-learn` are all dependencies of `profanity-check`.
+
+## Usage
+
+1. Install with `pip`.
+
+   ```
+   pip install django-profanity-check
+   ```
+
+1. Add `profanity` to your `INSTALLED_APPS`.
+
+   ```python
+   # settings.py
+
+   INSTALLED_APPS = [ ..., 'profanity', ...]
+
+   ```
+
+1. Use it in a template!
+
+   ```python-django
+   {# ... #}
+
+   {% load profanity %}
+
+   {# ... #}
+
+   {% with sentence='Hey, fuck you!' %}
+      {{ sentence | censor }} {# Will result in: 'Hey, **** you!' #}
+   {% endwith %}
+
+   ```
+
+## Todo
+
+- [ ] Allow custom replacement characters
+- [ ] Allow custom replacement character length
+- [ ] Template tests
+
+## Credits
+
+Victor Zhou's [profanity-check](https://github.com/vzhou842/profanity-check) Python package does all the heavy lifting.
+
+Inspired by [django-profanity-filter](https://github.com/ReconCubed/django-profanity-filter).
+

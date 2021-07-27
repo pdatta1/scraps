@@ -45,11 +45,70 @@
     display: inline-block;
 }
 
+.center_heading{
+   margin-left: 80px;
+}
+.center_p{
+  margin-left: 80px;
+}
+
+@media screen and (max-width: 600px){
+  .row{
+    text-align: justify;
+    min-width: 412px;
+    width: 80%; /* it changes by screen size actually */
+    height: 90px;
+    padding: 1px;
+    padding-bottom: 200px;
+}
+.row:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+.center_heading{
+  margin-left: 10%;
+}
+.center_p{
+  margin-left: 120px;
+}
+h2{
+  font-size: 20px;
+
+}
+
+h4{
+  font-size: 10px;
+  color: red;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  min-height: 200px;
+  width: 430px;
+  max-width : 100%;
+}
+.card-text {
+word-wrap: break-word;
+}
+
+.card:hover {
+   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+}
+
 </style>
-<h2 style="margin-left: 80px;"> <b>Central North Carolina Scraps</b></h2>
+<div class="center_heading">
+<h2> <b>Central North Carolina Scraps</b></h2>
+</div>
+
 {% if user.is_authenticated %}
 {% else %}
-<p style="color:red; margin-left: 150px;"><b>Login to Create Post</b></p>
+<div class="center_p">
+<h4><b>Login to Create Post</b></h4>
+</div>
 {% endif %}
 
 
@@ -103,4 +162,3 @@
 </div>
 {% endif %}
 {% endblock footer %}
-

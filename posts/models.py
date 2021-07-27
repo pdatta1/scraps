@@ -32,6 +32,8 @@ class ScrapUser(AbstractUser):
     class Meta:
         verbose_name = 'ScrapUser'
         unique_together = ('email',)
+
+
 def images_path(path):
     def wrapper(instance, filename):
         ext = filename.split('.')[-1]
@@ -50,7 +52,7 @@ def user_directory_path(instance, filename):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=200, unique=True, verbose_name="Title")
+    title = models.CharField(max_length=30, unique=True, verbose_name="Title")
     slug = models.SlugField(max_length=200, unique=True)
     city_name = models.IntegerField(choices=CITIES, default=0)
     author = models.ForeignKey(scrapsettings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_post')

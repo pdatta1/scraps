@@ -31,8 +31,12 @@
                     {% endfor %}
                  
         {% endif %}
+        <p style="margin-top: 20px;"> <a href="{% url 'posts:change_password' %}">forgot password? </a></p>
+
     </form>
     <p style="margin-top: 20px;"> Don't have an Account? <a href="{% url 'posts:create_user' %}">Register Here</a></p>
+
+    
     </div>
 </div>
 
