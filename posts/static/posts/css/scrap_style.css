@@ -1,7 +1,14 @@
 .scrapnav{
   background-color: #000000;
   overflow: hidden;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  width: 100%;
+
   }
+
+
 
 .scrapnav a{
  float: left;
@@ -150,6 +157,9 @@ padding: 0 10px;
 
 
 
+
+
+
 @media only screen and(max-width: 600px){
 .column{
     width: 100%;
@@ -160,6 +170,7 @@ padding: 0 10px;
   html, body{
 background-color: white;
 }
+
 .button{
 width: 100%;
 }
@@ -199,8 +210,13 @@ word-wrap: break-word;
 }
 
 }
+
+
+
+
 html, body {
 height: 100%;
+padding-top: 4rem;
 }
 
 #wrap {
@@ -286,10 +302,16 @@ input[type="username"]{
  -webkit-appearance: none;
 }
 
+
+
+.pump_button{
 button{
-width: 50%;
-padding: 20px;
+width: 20px;
+padding: 10px;
 }
+}
+
+
 
 
 .select:select{
@@ -303,4 +325,16 @@ padding: 20px;
 input[type="file"] {
  padding: 1px;
 
- }
+}
+
+
+.profile_buttons{
+  width: 80%;
+  height: 0;
+  padding-bottom: 1%;
+  border-radius: 50%;
+  border: 10px solid #1DA1F2;
+  overflow: hidden;
+  background: 1DA1F2;
+  box-shadow: 0 0 3px 1DA1F2;
+}

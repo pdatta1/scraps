@@ -2,133 +2,130 @@
 {% block css %}
 {% load static %}
 {% load bootstrap3 %}
-<link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock css %}
 
 
-{% endblock %}
+
 
 {% block content %}
+
+
+
 <style>
-.flex-child{
- white-space: nowrap;
- overflow: hidden;
- text-overflow: ellipsis;
-}
-.card {
-     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-     transition: 0.3s;
-     height: 200px;
-     width: 550px;
-   }
+.pagination>li>a, .pagination>li>span { border-radius: 50% !important;margin: 0 5px;}
 
-.card:hover {
-      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
- }
+body {
+            background-color: #ffffff;
+        }
 
- .container {
-     padding: 2px 16px;
-   }
-.row{
-    text-align: justify;
-    min-width: 412px;
-    width: 80%; /* it changes by screen size actually */
-    height: 90px;
-    padding: 100px;
-}
-.row:after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-}
-.col {
-    display: inline-block;
-}
+ .h7 {
+            font-size: 0.8rem;
+        }
 
-.center_heading{
-   margin-left: 80px;
-}
-.center_p{
-  margin-left: 80px;
-}
+ .gedf-wrapper {
+            margin-top: 0.97rem;
+        }
 
-@media screen and (max-width: 600px){
-  .row{
-    text-align: justify;
-    min-width: 412px;
-    width: 80%; /* it changes by screen size actually */
-    height: 90px;
-    padding: 1px;
-    padding-bottom: 200px;
-}
-.row:after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-}
-.center_heading{
-  margin-left: 10%;
-}
-.center_p{
-  margin-left: 120px;
-}
-h2{
-  font-size: 20px;
+ .gedf-main {
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 4rem;
+                padding-right: 4rem;
+                padding-top: 1rem;
 
-}
+            }
+ .gedf-card {
+                margin-bottom: 2.77rem;
+            }
 
-h4{
-  font-size: 10px;
-  color: red;
-}
+ .dropdown-toggle::after {
+            content: none;
+        }
 
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  min-height: 200px;
-  width: 430px;
-  max-width : 100%;
-}
-.card-text {
-word-wrap: break-word;
-}
 
-.card:hover {
-   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 </style>
-<div class="center_heading">
-<h2> <b>Central North Carolina Scraps</b></h2>
+
+<div class="mainfeed">
+     {% for post in post_list %}
+     <div class="col-md-6 gedf-main">
+                <div class="card gedf-card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="mr-2">
+                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h5 m-0">{{ post.author }}</div>
+                                </div>
+                            </div>
+                            <div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ post.created_on }}</div>
+                        <a class="card-link" href="{% url 'posts:post_detail' post.id %}">
+                            <h5 class="card-title"> {{ post.title }}</h5>
+                        </a>
+
+                        <p class="card-text">
+                            {{ post.brief }}
+                        </p>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <div class="card-footer">
+                        <div class="pump_button">
+                          <form action="{% url 'posts:pumped' post.pk %} " method="POST">
+                            {% csrf_token %}
+                            <button type="submit" value="{{ post.id }}" name="post_id" class="btn btn-primary"><i class="fa fa-gittip"></i> {{ post.pumps.count }}</button>
+                          </form>
+                        </div>
+                    </div>
+                     {% else %}
+                     <div class="card-footer">
+                        <div class="pump_button">
+                         <a class="card-link"><i class="fa fa-gittip"> {{post.pumps.count}}</i> </a>
+                        </div>
+                    </div>
+
+
+                    {% endif %}
+                </div>
+
+            </div>
+     {% endfor %}
 </div>
 
-{% if user.is_authenticated %}
-{% else %}
-<div class="center_p">
-<h4><b>Login to Create Post</b></h4>
-</div>
-{% endif %}
 
 
-{% for post in post_list %}
-<div class="row">
-    <div class="col">
-      <div class="card">
-        <div class="container">
-            <a href="{% url 'posts:post_detail' post.slug %}">
-                <h3 style=" word-wrap: break-word;">   {{ post.title}} </h3>
-            </a>
-           <p style="color:blue;"> -{{ post.created_on }}</p>
-            <p style="color:red;"><b> {{ post.get_city_name }}</b></p>
 
-        </div>
-      </div>
-    </div>
-</div>
-<br/>
-{% endfor %}
+
+
+
+
+
 
 {% endblock content %}
 
@@ -145,7 +142,7 @@ word-wrap: break-word;
 
     {% for i in paginator.page_range %}
     {% if page_obj.number == i %}
-       <li class="page-item active"><span> {{ i }}<span class="sr-only">(current)</span></span></li>
+       <li class="active"><span> {{ i }}<span class="sr-only">(current)</span></span></li>
     {% else %}
       <li><a class="page-link" href="?page={{i}}">{{i}}</a></li>
     {% endif %}

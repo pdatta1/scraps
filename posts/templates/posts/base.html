@@ -30,6 +30,7 @@
          <a class="#" href="{% url 'posts:profile' %}">Welcome, {{user.username}}</a>
          <a class="#" href="{% url 'posts:create_post' %}">Create Post</a>
          <a class="#" href="{% url 'posts:logout' %}">Logout</a>
+
          {% else %}
          <a class="active" href="{% url 'posts:index' %}">Scraps</a>
          <a class="#" href="{% url 'posts:login' %}">Login</a>
@@ -46,7 +47,24 @@
 {% block content %} - {% endblock content %}
     </div>
 </div>
+<script>
+window.onscroll = function() {myFunction()};
 
+// Get the navbar
+var navbar = document.getElementByClassName("scrapnav");
+
+// Get the offset position of the navbar
+var sticky = navbar.offsetTop;
+
+// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+}
+</script>
 
 </body>
 

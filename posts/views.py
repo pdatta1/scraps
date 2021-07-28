@@ -1,9 +1,10 @@
 from django.views import generic
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, ScrapUser
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from posts.create_post import CreatePostForm
-from posts.create_user import CreateUserForm, EditUserForm 
+from posts.create_user import CreateUserForm, EditUserForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -17,14 +18,15 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail, BadHeaderError
+from django.http import JsonResponse
+
 
 @xframe_options_exempt
 def create_user(request):
     if request.method == 'POST':
-        register_form = CreateUserForm(request.POST) 
+        register_form = CreateUserForm(request.POST)
 
         if register_form.is_valid():
-
             user = register_form.save()
             login(request, user)
             messages.success(request, "Account Created.")
@@ -65,7 +67,6 @@ def logout_user(request):
 @login_required
 @xframe_options_exempt
 def create_post(request):
-
     if request.method == 'POST':
         post_form = CreatePostForm(request.POST, request.FILES)
 
@@ -128,13 +129,25 @@ def succeed_edit_post(request):
     return render(request=request, template_name='posts/succeed_edit_post.html')
 
 
+def pump(request, pk):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.pumps.add(request.user)
+    return HttpResponseRedirect(reverse('posts:index'))
+
+
+def pump_at_detail(request, pk):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.pumps.add(request.user)
+    return HttpResponseRedirect(reverse('posts:post_detail', args=[str(pk)]))
+
+
 class PostList(generic.ListView):
     model = Post
-    paginate_by = 10
+    paginate_by = 5
     template_name = 'posts/index.html'
+    queryset = Post.objects.filter(status=1,).order_by('-created_on')
 
-    queryset = Post.objects.filter(status=1).order_by('-created_on')
-  
+
 class PostDetail(generic.DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
@@ -148,7 +161,7 @@ def edit_profile(request):
             return redirect('posts:profile')
     else:
         editform = EditUserForm(instance=request.user)
-    return render(request=request, template_name='posts/edit_profile.html', context={'form':editform})
+    return render(request=request, template_name='posts/edit_profile.html', context={'form': editform})
 
 
 def delete_user(request):
@@ -181,10 +194,11 @@ def change_password(request):
                     }
                     scrap_email = render_to_string(email_template_name, content)
                     try:
-                        send_mail(subject, scrap_email, 'ncscrapsite@gmail.com',[user.email], fail_silently=False)
+                        send_mail(subject, scrap_email, 'ncscrapsite@gmail.com', [user.email], fail_silently=False)
                     except BadHeaderError:
                         messages.error('Invalid Header Found')
                     logout(request)
                     return redirect('password_reset_done')
     password_change_form = PasswordResetForm()
-    return render(request=request, template_name='posts/password_change/password_reset.html', context={'password_change_form': password_change_form})
+    return render(request=request, template_name='posts/password_change/password_reset.html',
+                  context={'password_change_form': password_change_form})

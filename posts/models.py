@@ -11,15 +11,6 @@ STATUS = (
     (1, "Publish"),
 )
 
-CITIES = (
-    (0, "Raleigh"),
-    (1, "Durham"),
-    (2, "Cary"),
-    (3, "Morrisville"),
-    (4, "Apex"),
-    (5, "Garner"),
-)
-
 Flags = (
     (0, 'saved'),
     (0, 'report'),
@@ -50,15 +41,15 @@ def user_directory_path(instance, filename):
     return '{0}/{0}'.format(instance.id, images_path(filename))
 
 
-
 class Post(models.Model):
     title = models.CharField(max_length=30, unique=True, verbose_name="Title")
     slug = models.SlugField(max_length=200, unique=True)
-    city_name = models.IntegerField(choices=CITIES, default=0)
     author = models.ForeignKey(scrapsettings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_post')
     updated = models.DateTimeField(auto_now=True)
     content = models.TextField()
+    brief = models.TextField(max_length=100, default='')
     created_on = models.DateTimeField(auto_now=True)
+    pumps = models.ManyToManyField(ScrapUser, related_name='blog_post_pumps')
     status = models.IntegerField(choices=STATUS, default=0)
     phone_number = models.CharField(max_length=200, default='')
     email_address = models.CharField(max_length=200, default='')
@@ -79,4 +70,9 @@ class Post(models.Model):
 
     def get_city_name(self):
         return dict(CITIES).get(self.city_name)
+
+    def number_of_pumps(self):
+        self.pumps.count()
+
+
 

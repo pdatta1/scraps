@@ -22,9 +22,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
@@ -37,16 +34,12 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 STATIC_URL = '/static/'
 
-
-
-#S3 BUCKET CONFIG
+# S3 BUCKET CONFIG
 AWS_STORAGE_BUCKET_NAME = 'scraps3'
 AWS_ACCESS_KEY_ID = 'AKIA6DXHTVMYQOQ5RTEV'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_QUERYSTRING_AUTH = False
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -57,9 +50,9 @@ with open(file) as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['scrapnc.com','www.scrapnc.com','3.135.192.249']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -103,7 +96,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-               
+
             ],
         },
     },
@@ -117,10 +110,10 @@ WSGI_APPLICATION = 'scrap_post.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'scrappost.cpgnyvpdkc9m.us-east-2.rds.amazonaws.com',
+        'HOST': '127.0.0.1',
         'NAME': 'scrap_post',
-        'USER': 'admin',
-        'PASSWORD': 'hgt.22-3admin',
+        'USER': 'zeusgod',
+        'PASSWORD': 'Hgt.22-3patrick',
         'PORT': '3306',
     }
 }
@@ -178,17 +171,4 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ncscrapsite@gmail.com'
 EMAIL_HOST_PASSWORD = 'hgt.22-3scrapnc'
-
-
-
-SECURE_HSTS_PRELOAD             = True
-CORS_REPLACE_HTTPS_REFERER      = True
-HOST_SCHEME                     = "https://"
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT             = True
-SESSION_COOKIE_SECURE           = True
-CSRF_COOKIE_SECURE              = True
-SECURE_HSTS_SECONDS             = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
-SECURE_FRAME_DENY               = True
 

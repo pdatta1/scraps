@@ -1,41 +1,96 @@
 {% extends "posts/base.html" %}
-{% load static %}
 {% block css %}
 {% load static %}
 {% load bootstrap3 %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 {% endblock css %}
 
 {% block content %}
-<div  style="margin: auto; margin-top: 20px; " class="card_detail">
-    <h2> {{ post.title }}</h2>
-    <p>{{ post.content }}</p>
-    {% if post.image1 %}
-    <img src = "{{ post.image1.url }}" class="img-responsive"/>
-    <br/>
 
-    {% endif %}
-    {% if post.image2 %}
-        <img src = "{{ post.image2.url }}" class="img-responsive"/>
-        <br/>
+<style>
 
-    {% endif %}
+body {
+            background-color: #ffffff;
+        }
 
-    {% if post.image3 %}
-        <img src = "{{ post.image3.url }}" class="img-responsive"/>
-        <br/>
+ .h7 {
+            font-size: 0.8rem;
+        }
 
-    {% endif %}
+ .gedf-wrapper {
+            margin-top: 0.97rem;
+        }
 
-</div>
+ .gedf-main {
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 4rem;
+                padding-right: 4rem;
+                padding-top: 1rem;
+
+            }
+ .gedf-card {
+                margin-bottom: 2.77rem;
+
+            }
+
+ .dropdown-toggle::after {
+            content: none;
+        }
+</style>
+
+
+<div class="mainfeed">
+     <div class="col-md-6 gedf-main">
+                <div class="card gedf-card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="mr-2">
+                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h5 m-0">{{ post.author }}</div>
+                                </div>
+                            </div>
+                            <div>
+
+                            </div>
+                        </div>
 
 
 
-<div style="margin: auto;" class="card_detail_contact">
-    <h3> <u>Contacts </u>: </h3>
-    <p> <b>Phone</b> :  {{ post.phone_number }} </p>
-    <p> <b>Email Address</b>: {{ post.email_address }}</p>
-    <p> <b>Author </b>: {{ post.author }}</p>
-</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ post.created_on }}</div>
+                            <h5 class="card-title"> <b>{{ post.title }}</b></h5>
+
+
+                        <p class="card-text">
+                            {{ post.content }}
+                        </p>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <div class="card-footer">
+                        <div class="pump_button">
+                          <form action="{% url 'posts:pumped' post.pk %} " method="POST">
+                            {% csrf_token %}
+                            <button type="submit" value="{{ post.id }}" name="post_id" class="btn btn-primary"><i class="fa fa-gittip"></i> {{ post.pumps.count }}</button>
+                          </form>
+                        </div>
+                    </div>
+                    {% else %}
+                     <div class="card-footer">
+                        <div class="pump_button">
+                         <a class="card-link"><i class="fa fa-gittip"> {{post.pumps.count}}</i> </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+    </div>
 
 {% endblock %}
