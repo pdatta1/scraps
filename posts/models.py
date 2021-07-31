@@ -16,6 +16,14 @@ Flags = (
     (0, 'report'),
 )
 
+GENDER = (
+    (0, 'male'),
+    (1, 'female'),
+    (2, 'other'),
+)
+def user_profilepic_path(instance, filename):
+    return '{0}/{0}'.format(instance.user.id,images_path(filename))
+
 
 class ScrapUser(AbstractUser):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
@@ -24,6 +32,20 @@ class ScrapUser(AbstractUser):
         verbose_name = 'ScrapUser'
         unique_together = ('email',)
 
+class Profile(models.Model):
+    user = models.OneToOneField(ScrapUser, null=True, on_delete=models.CASCADE)
+    bio = models.TextField()
+    profile_pic = models.ImageField(upload_to=user_profilepic_path, null=True, blank=True, default='')
+    status = models.IntegerField(choices=GENDER, default=0)
+    post_count = models.ManyToManyField('Post', null=True, related_name='post_count')
+
+
+    def __str__(self):
+        return str(self.user)
+
+    
+    def get_gender_name(self):
+        return dict(GENDER).get(self.gender)    
 
 def images_path(path):
     def wrapper(instance, filename):
@@ -68,11 +90,10 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('posts:index')
 
-    def get_city_name(self):
-        return dict(CITIES).get(self.city_name)
 
     def number_of_pumps(self):
         self.pumps.count()
+
 
 
 

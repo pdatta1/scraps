@@ -17,10 +17,11 @@ urlpatterns = [
     path('delete_user', views.delete_user, name='delete_user'),
     path('posts/edit_post/<int:pk>', views.PostUpdateView.as_view(), name='edit_post'),
     path('edit_user', views.edit_profile, name='edit_user'),
+    path('post/view_profile/<int:pk>', views.View_Profile.as_view(), name='view_profile'),
+    path('edit_profile', views.edit_profilepic, name='edit_profilepic'),   
     path('posts/delete_post/<int:pk>', views.PostDeleteView.as_view(), name='delete_post'),
     path('succeed_edit_post', views.succeed_edit_post, name='succeed_edited'),
-    path('pump/<int:pk>', views.pump, name='pumped'),
-    path('pump_detail/<int:pk>', views.pump_at_detail, name='pumped_detail'),
+    path('pump_detail/<int:pk>', views.pump, name='pumped_detail'),
     path('logout', views.logout_user, name='logout'),
     path('post/<int:pk>', views.PostDetail.as_view(), name='post_detail'),
 

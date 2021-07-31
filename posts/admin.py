@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, ScrapUser
+from .models import Post, ScrapUser, Profile
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -13,3 +13,4 @@ class PostAdmin(admin.ModelAdmin):
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(ScrapUser)
+admin.site.register(Profile)

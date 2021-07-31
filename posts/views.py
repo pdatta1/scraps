@@ -24,7 +24,7 @@ from django.http import JsonResponse
 @xframe_options_exempt
 def create_user(request):
     if request.method == 'POST':
-        register_form = CreateUserForm(request.POST)
+        register_form = CreateUserForm(request.POST, request.FILES)
 
         if register_form.is_valid():
             user = register_form.save()
@@ -129,16 +129,19 @@ def succeed_edit_post(request):
     return render(request=request, template_name='posts/succeed_edit_post.html')
 
 
+
 def pump(request, pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    post.pumps.add(request.user)
-    return HttpResponseRedirect(reverse('posts:index'))
+    pumped = False
+    if post.pumps.filter(id=request.user.id).exists():
+        post.pumps.remove(request.user)
+        pumped = False
+    else:
+        post.pumps.add(request.user)
+        pumped = True
 
-
-def pump_at_detail(request, pk):
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    post.pumps.add(request.user)
     return HttpResponseRedirect(reverse('posts:post_detail', args=[str(pk)]))
+
 
 
 class PostList(generic.ListView):
@@ -148,9 +151,21 @@ class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1,).order_by('-created_on')
 
 
+
 class PostDetail(generic.DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PostDetail, self).get_context_data(**kwargs)
+
+        data = get_object_or_404(Post, id=self.kwargs['pk'])
+        pumped = False
+        if data.pumps.filter(id=self.request.user.id).exists():
+            pumped = True 
+        
+        context['pumped'] = pumped  
+        return context 
 
 
 def edit_profile(request):
@@ -162,6 +177,14 @@ def edit_profile(request):
     else:
         editform = EditUserForm(instance=request.user)
     return render(request=request, template_name='posts/edit_profile.html', context={'form': editform})
+
+def edit_profilepic(request):
+    pass
+
+class View_Profile(generic.DetailView):
+    model = Post 
+    template_name = 'posts/view_profile.html'
+
 
 
 def delete_user(request):

@@ -305,10 +305,12 @@ input[type="username"]{
 
 
 .pump_button{
+
 button{
 width: 20px;
 padding: 10px;
 }
+
 }
 
 
@@ -338,3 +340,17 @@ input[type="file"] {
   background: 1DA1F2;
   box-shadow: 0 0 3px 1DA1F2;
 }
+
+
+.pump_button{
+  button{
+  width: 20px;
+  padding: 10px;
+  }
+  }    
+
+
+
+/* Like Button css */
+
+

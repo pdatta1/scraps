@@ -52,7 +52,7 @@ with open(file) as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['scrapnc.com', '3.135.192.249', 'www.scrapnc.com']
 
 # Application definition
 
@@ -110,10 +110,10 @@ WSGI_APPLICATION = 'scrap_post.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
+        'HOST': 'scrappost.cpgnyvpdkc9m.us-east-2.rds.amazonaws.com',
         'NAME': 'scrap_post',
-        'USER': 'zeusgod',
-        'PASSWORD': 'Hgt.22-3patrick',
+        'USER': 'admin',
+        'PASSWORD': 'hgt.22-3admin',
         'PORT': '3306',
     }
 }
@@ -172,3 +172,13 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ncscrapsite@gmail.com'
 EMAIL_HOST_PASSWORD = 'hgt.22-3scrapnc'
 
+SECURE_HSTS_PRELOAD             = True
+CORS_REPLACE_HTTPS_REFERER      = True
+HOST_SCHEME                     = "https://"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT             = True
+SESSION_COOKIE_SECURE           = True
+CSRF_COOKIE_SECURE              = True
+SECURE_HSTS_SECONDS             = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
+SECURE_FRAME_DENY               = True

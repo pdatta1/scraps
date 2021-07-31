@@ -5,6 +5,12 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="{% static 'static/posts/css/scrap_style.css' %}" rel="stylesheet"/>
+<link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
 
 {% endblock css %}
 {% block content %}
@@ -58,6 +64,7 @@ body {
         <h4> <a href="{% url 'posts:change_password' %}">Change Password</a></h4>
         <h4>  <a href="{% url 'posts:edit_user' %} ">Change EmailAddress</a></h4>
         <h4> <a href="{% url 'posts:delete_user' %}">Delete Account</a></h4>
+        <h4> <a href="{% url 'posts:edit_profilepic' %}">Edit Profile Pic</a></h4>
       </div>
   </div>    
 </div>
@@ -78,10 +85,14 @@ body {
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                    {% if posts.author.profile.profile_pic %}
+                                    <img style="width: 50px; height: 50px;"class="rounded-circle" width="45" src="{{ posts.author.profile.profile_pic.url }}" alt="">
+                                    {% else %}
+                                    <img class="rounded-circle" width="45" src="https://img.icons8.com/ios/50/000000/gender-neutral-user.png" alt="">
+                                    {% endif %} 
                                 </div>
                                 <div class="ml-2">
-                                    <div class="h5 m-0">{{ posts.author }}</div>
+                                    <div class="h5 m-0">{{ posts.author.username }}</div>
                                 </div>
                             </div>
                             <div>
@@ -94,7 +105,7 @@ body {
                     </div>
                     <div class="card-body">
                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ posts.created_on }}</div>
-                        <a class="card-link" href="#">
+                        <a class="card-link" href="{% url 'posts:post_detail' posts.id %}">
                             <h5 class="card-title"> {{ posts.title }}</h5>
                         </a>
 

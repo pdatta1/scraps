@@ -32,4 +32,6 @@ class EditUserForm(UserChangeForm):
         }
         fields = ('email',)
         exclude = ['password', 'last-login', 'is_superuser', 'username', 'is_staff', 'is_active', 'date_joined',
-                   'post_id']
+                   'post_id',]
+
+
