@@ -37,9 +37,7 @@ class Profile(models.Model):
     bio = models.TextField()
     profile_pic = models.ImageField(upload_to=user_profilepic_path, null=True, blank=True, default='')
     status = models.IntegerField(choices=GENDER, default=0)
-    post_count = models.ManyToManyField('Post', null=True, related_name='post_count')
-
-
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True)
     def __str__(self):
         return str(self.user)
 
@@ -96,4 +94,38 @@ class Post(models.Model):
 
 
 
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    context = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=False)
 
+
+    class Meta:
+
+        ordering = ['date_created']
+        verbose_name = 'comment'
+        verbose_name_plural = 'comments'
+    
+    def __str__(self):
+        return 'Comment: {0} - {0}'.format(self.post.title, self.profile)
+
+
+
+class SubComment(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='sub_comments')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    context = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=False)
+
+
+    class Meta:
+
+        ordering = ['date_created']
+        verbose_name = 'sub_comment'
+        verbose_name_plural = 'sub_comments'
+    
+    def __str__(self):
+        return 'Sub_Comment: {0} - {0}'.format(self.comment.post.title, self.profile)

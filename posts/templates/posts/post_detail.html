@@ -2,16 +2,10 @@
 {% block css %}
 {% load static %}
 {% load bootstrap3 %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
 <link href="{% static 'static/posts/css/scrap_style.css' %}" rel="stylesheet"/>
 <link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+
 
 {% endblock css %}
 
@@ -37,6 +31,9 @@ body {
                 padding-left: 4rem;
                 padding-right: 4rem;
                 padding-top: 1rem;
+                overflow: hidden;
+                transition: max-height 0.2s ease-out;
+
 
             }
  .gedf-card {
@@ -47,10 +44,54 @@ body {
  .dropdown-toggle::after {
             content: none;
         }
+
+.title {
+    font-size: 14px;
+    font-weight:bold;
+}
+.komen {
+    font-size:14px;
+}
+.geser {
+    margin-left:20px;
+    margin-top:5px;
+}
+
+
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+.mainfeed {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.comment_form{             
+  width: 100%;
+  height: 50px;
+}
+
 </style>
 
-
-<div class="mainfeed">
      <div class="col-md-6 gedf-main">
                 <div class="card gedf-card">
                     <div class="card-header">
@@ -87,17 +128,49 @@ body {
                     </div>
                     {% if user.is_authenticated %}
                     <div class="card-footer">
-                        <div class="pump_button">
+                         <div class="pump_button">
                             <form action="{% url 'posts:pumped_detail' post.pk %} " method="POST">
                               {% csrf_token %}
                               {% if pumped %}
-                              <button type="submit" value="{{ post.id }}" name="post_id" class="btn btn-danger"><i class="fas fa-dumbbell"></i> {{ post.pumps.count }}</button> 
+                              <button type="submit" id="left" value="{{ post.id }}" name="post_id" class="btn btn-danger float-left"><i class="fas fa-dumbbell"></i> {{ post.pumps.count }}</button> 
                               {% else %}
-                              <button type="submit" value="{{ post.id }}" name="post_id" class="btn btn-primary"><i class="fa fa-dumbbell"></i> {{ post.pumps.count }}</button> 
+                              <button type="submit" value="{{ post.id }}" name="post_id" class="btn btn-primary float-left"><i class="fa fa-dumbbell"></i> {{ post.pumps.count }}</button> 
                                {% endif %}
-                          </form>
-                        </div>
+                            </form>    
+                         </div>
+                         <button type="button" data-toggle="modal" data-target="#commentModal" id="center" style="margin-left: 1rem;"class="btn btn-primary"><i class="far fa-comment"> comment</i></button>
                     </div>
+
+
+                    <div class="modal fade" id="commentModal" role="dialog">
+                        <form method="POST">
+
+                        <div class="modal-dialog">
+                        
+                          <!-- Comment Model content-->
+                          <div class="modal-content">
+
+                            <div class="modal-header">
+                              <h4 class="modal-title"><b>Comment</b></h4>
+                            </div>
+
+                            <div class="modal-body">
+                              <p>commenting as <b>{{user.username}}</b></p>
+                              {% csrf_token %}
+                              {{coment_form.as_p}}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary">comment</button>
+                            </div>
+                          </div>
+
+                          
+                        </div>
+                       </form>
+
+                      </div>
+
                     {% else %}
                      <div class="card-footer">
                         <div class="pump_button">
@@ -107,7 +180,121 @@ body {
                     {% endif %}
                 </div>
 
-            </div>
-    </div>
+</div>
+
+<hr/>
+
+{% if not post.comments.all %}
+    <div class="col-md-6 gedf-main">
+               <div class="card gedf-card" style="border-radius: 0px 10px 10px 10px;">
+                       <div class="d-flex justify-content-between align-items-center">
+                           <div class="d-flex justify-content-between align-items-center">
+                              
+                           </div>
+                           <div>
+
+                           </div>
+                   </div>
+                   <div class="card-body">
+
+                       <p class="card-text">
+                           no comments 
+                       </p>
+                   </div>
+               </div>
+
+     </div>
+{% else %}
+{% for comment in post.comments.all %}
+    <div class="col-md-6 gedf-main">
+               <div class="card gedf-card" style="border-radius: 0px 10px 10px 10px;">
+                   <div class="card-header" style="background-color: white;">
+                       <div class="d-flex justify-content-between align-items-center">
+                           <div class="d-flex justify-content-between align-items-center">
+                               <div class="mr-2" >
+                                                               
+                                   {% if comment.profile.profile_pic %}
+                                   <img style="width: 50px; height: 50px;"class="rounded-circle" width="45" src="{{ comment.profile.profile_pic.url }}" alt="">
+                                   {% else %}
+                                   <img class="rounded-circle" width="45" src="https://img.icons8.com/ios/50/000000/gender-neutral-user.png" alt="">
+                                   {% endif %}         
+                               </div>
+                               <div class="ml-2">
+                                   <div class="h5 m-0">{{ comment.profile.user.username }}</div>
+                               </div>
+                           </div>
+                           <div>
+
+                           </div>
+                       </div>
+                   </div>
+                   <div class="card-body">
+
+                    <p class="card-text">
+                        {{ comment.context }}
+                    </p>
+                    <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ comment.date_created }}</div>
+                   {% if comment.sub_comments.all == null %}
+                   <p>no</p>
+                   {% else %}
+                   <button type="button" class="collapsible">Expand</button>
+                   {% endif %}
+                   <div class="mainfeed">
+
+
+           
+                       <hr/>
+
+                {% for sub_comment in comment.sub_comments.all %}
+                   <div class="container" style="padding: 1px;">
+                    <div class="list-group">
+    
+                      <div class="media">
+                       <div class="media-left">
+                         <img src="{{ sub_comment.profile.profile_pic.url }} " class="rounded-circle" style="width:50px; height:50px;">
+                       </div>
+                       <div class="media-body">
+                         <h4 class="media-heading title">{{ sub_comment.profile.user.username }}</h4>
+                         <p class="komen">
+                           {{ sub_comment.context }}<br>
+                         </p>
+                      <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ sub_comment.date_created }}</div>
+
+                      </div>
+                      </div>
+
+  
+                      </div>  
+                      </div>
+                {% endfor %}
+
+                </div>
+               </div>
+
+</div>
+
+</div>
+     
+   {% endfor %}
+   {% endif %}  
+
+
+   <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    }
+</script>
+
 
 {% endblock %}

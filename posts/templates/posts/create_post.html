@@ -1,47 +1,49 @@
-{% extends "posts/base.html" %}
+                
+                {% extends "posts/base.html" %}
 
-{% block css %}
-{% load static %}
-{% load bootstrap3 %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>
-<link href="{% static 'static/posts/css/scrap_style.css' %}" rel="stylesheet"/>
-<link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
-
-{% endblock css %}
-{% block content %}
-{% load static %}
-{% load crispy_forms_tags %}
-
-<div style="margin: auto; margin-top: 20px;" class="card_create_post">
-        <div class="form">
-          <h2> Create Post </h2>
-            <form id="post_form" method="post" action="" enctype="multipart/form-data">
-              {% csrf_token %}
-
-                {{ post_form | crispy }}
-
-                <button style="padding: 10px; margin-top: 10px; width: 6rem;" class="btn btn-primary" type="submit">Create</button>
-
-                {% if messages %}
-                <div style="padding: 10px; margin-top: 10px;" class="container-fluid p-0">
-                 {% for message in messages %}
-                   <div class="alert {{ message.tags }} alert-dismissible" role="alert"> 
-                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                       <span aria-hidden="true">&times;</span>
-                   </button>
-                   {{message}}
+                {% block css %}
+                {% load static %}
+                {% load bootstrap3 %}
+                <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+                <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>
+                <link href="{% static 'static/posts/css/scrap_style.css' %}" rel="stylesheet"/>
+                <link href="{% static 'posts/css/scrap_style.css' %}" rel="stylesheet"/>
+                <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+                <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+                
+                {% endblock css %}
+                {% block content %}
+                {% load static %}
+                {% load crispy_forms_tags %}
+                
+                <div style="margin: auto; margin-top: 20px;" class="card_create_post">
+                        <div class="form">
+                          <h2> Create Post </h2>
+                            <form id="post_form" method="post" action="" enctype="multipart/form-data">
+                              {% csrf_token %}
+                
+                                {{ post_form | crispy }}
+                
+                                <button style="padding: 10px; margin-top: 10px; width: 6rem;" class="btn btn-primary" type="submit">Create</button>
+                
+                                {% if messages %}
+                                <div style="padding: 10px; margin-top: 10px;" class="container-fluid p-0">
+                                 {% for message in messages %}
+                                   <div class="alert {{ message.tags }} alert-dismissible" role="alert"> 
+                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                       <span aria-hidden="true">&times;</span>
+                                   </button>
+                                   {{message}}
+                                </div>
+                            </div>
+                                {% endfor %}
+                             
+                    {% endif %}
+                            </form>
+                    </div>
                 </div>
-            </div>
-                {% endfor %}
-             
-    {% endif %}
-            </form>
-    </div>
-</div>
-{% endblock content %}
+                {% endblock content %}
+                

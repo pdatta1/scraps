@@ -55,31 +55,35 @@ body {
 
 
 
+<div class="col-md-6 gedf-main">
+    <div class="card gedf-card" style="border-radius: 0px 10px 10px 10px;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center">
+                   
+                </div>
+                <div>
 
-<h1 style="text-align: left; margin-left: 100px; vertical-align: middle; line-width: -100px;"><b>My Profile</b> </h1>
+                </div>
+        </div>
+        <div class="card-body">
 
-<div class="card_profile">
-  <div class="text_align">
-    <div class="container">
-        <h4> <a href="{% url 'posts:change_password' %}">Change Password</a></h4>
-        <h4>  <a href="{% url 'posts:edit_user' %} ">Change EmailAddress</a></h4>
-        <h4> <a href="{% url 'posts:delete_user' %}">Delete Account</a></h4>
-        <h4> <a href="{% url 'posts:edit_profilepic' %}">Edit Profile Pic</a></h4>
-      </div>
-  </div>    
+            <p class="card-text">
+                <h4> <a href="{% url 'posts:change_password' %}">Change Password</a></h4>
+                <h4>  <a href="{% url 'posts:edit_user' %} ">Change EmailAddress</a></h4>
+                <h4> <a href="{% url 'posts:delete_user' %}">Delete Account</a></h4>
+                <h4> <a href="{% url 'posts:edit_profilepic' %}">Edit Profile Pic</a></h4>            </p>
+        </div>
+    </div>
+
 </div>
 
-
-<h1 style="text-align: left; margin-left: 100px; vertical-align: middle; line-width: -100px;"> <b>My Scraps</b> </h1>
-      {% if not my_posts %}
-      <img style="margin-left: 120px;" width="200px" height="200px" src="https://img.icons8.com/ios/50/000000/empty-box.png"/>
-      {% endif %}
-
-
+<hr/>
 
 <div class="mainfeed">
     {% for posts in my_posts %}
+
      <div class="col-md-6 gedf-main">
+
                 <div class="card gedf-card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">

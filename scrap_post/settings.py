@@ -115,7 +115,10 @@ DATABASES = {
         'USER': 'admin',
         'PASSWORD': 'hgt.22-3admin',
         'PORT': '3306',
-    }
+    },
+    'OPTIONS': {
+         "init_command": "SET foreign_key_checks = 0;",
+    },
 }
 
 # CHANGE USER AUTH MODEL

@@ -1,10 +1,11 @@
 from django.views import generic
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Post, ScrapUser
+from .models import Post, ScrapUser, Comment
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from posts.create_post import CreatePostForm
-from posts.create_user import CreateUserForm, EditUserForm
+from posts.create_user import CreateUserForm, EditUserForm, EstablishProfileForm
+from posts.create_comment import CommentForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -19,6 +20,10 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail, BadHeaderError
 from django.http import JsonResponse
+from django.db.models import Count 
+from django.views.generic.edit import FormMixin 
+from django.views.generic.detail import DetailView 
+
 
 
 @xframe_options_exempt
@@ -30,10 +35,24 @@ def create_user(request):
             user = register_form.save()
             login(request, user)
             messages.success(request, "Account Created.")
-            return redirect('posts:index')
+            return redirect('posts:establish_profile')
     else:
         register_form = CreateUserForm
     return render(request=request, template_name="posts/create_user.html", context={"register_form": register_form})
+
+
+@xframe_options_exempt
+def create_userprofile(request):
+    if request.method == 'POST':
+        profile_form = EstablishProfileForm(request.POST, request.FILES)
+        if profile_form.is_valid():
+            profile_form.save(request)
+            messages.success(request, "Account Created.")
+            return redirect('posts:index')
+    else:
+        register_form = EstablishProfileForm()
+    return render(request=request, template_name="posts/establish_profile.html", context={"profile_form": register_form})
+
 
 
 @xframe_options_exempt
@@ -146,15 +165,21 @@ def pump(request, pk):
 
 class PostList(generic.ListView):
     model = Post
-    paginate_by = 5
+    paginate_by = 15
     template_name = 'posts/index.html'
     queryset = Post.objects.filter(status=1,).order_by('-created_on')
 
 
 
-class PostDetail(generic.DetailView):
+
+
+class PostDetail(FormMixin, DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
+    form_class = CommentForm 
+
+    def get_success_url(self):
+        return reverse('posts:post_detail', kwargs={'pk': self.object.id})
 
     def get_context_data(self, *args, **kwargs):
         context = super(PostDetail, self).get_context_data(**kwargs)
@@ -163,10 +188,46 @@ class PostDetail(generic.DetailView):
         pumped = False
         if data.pumps.filter(id=self.request.user.id).exists():
             pumped = True 
-        
+
         context['pumped'] = pumped  
+        context['coment_form'] = CommentForm(initial={'post': self.object})
         return context 
 
+    def post(self, request, *args, **kwargs):
+          self.object = self.get_object()
+          comment_form = self.get_form()
+          if comment_form.is_valid():
+            return self.form_valid(comment_form)
+          else:
+            return self.form_invalid(comment_form)
+
+    def form_valid(self, form):
+        form.instance.post_id = self.kwargs['pk']
+        form.instance.profile_id = self.request.user.id 
+        form.save()
+        return super(PostDetail, self).form_valid(form)
+                  
+
+
+def create_comments(request, pk):
+    post = get_object_or_404(Post, id=request.POST.get('give_comment'))
+    comments = post.comment.filter(active=True)
+    new_comments = None
+
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comments = comment_form.save(commit=False)
+            new_comments.post = post 
+            new_comments.save()
+    else:
+        comment_form = CommentForm()
+    
+    return render(request, template_name='posts/post_detail.html', context=
+    {'comments': comments,
+     'new_comment': new_comments,
+     'comment_form': comment_form, 
+    })
 
 def edit_profile(request):
     if request.method == 'POST':
@@ -184,6 +245,11 @@ def edit_profilepic(request):
 class View_Profile(generic.DetailView):
     model = Post 
     template_name = 'posts/view_profile.html'
+
+
+
+        
+
 
 
 

@@ -1,5 +1,5 @@
 from django import forms
-from .models import ScrapUser
+from .models import ScrapUser, Profile
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib import messages
 
@@ -14,6 +14,8 @@ class CreateUserForm(UserCreationForm):
         user.username = self.cleaned_data['username']
         user.email = self.cleaned_data['email']
        
+        
+
         user.save()
         return user
 
@@ -35,3 +37,24 @@ class EditUserForm(UserChangeForm):
                    'post_id',]
 
 
+
+class EstablishProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile 
+        fields = '__all__'
+        exclude = ['user', 'post',]
+
+    def save(self, request, commit=True):
+        profile = super(EstablishProfileForm, self).save(commit=False)
+
+        profile.user = request.user
+        profile.bio = self.cleaned_data['bio']
+        profile.profile_pic = self.cleaned_data['profile_pic']
+        profile.status = self.cleaned_data['status']
+
+
+        
+        if commit:
+            profile.save()
+        return profile 
