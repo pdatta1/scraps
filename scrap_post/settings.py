@@ -36,10 +36,10 @@ STATIC_URL = '/static/'
 
 # S3 BUCKET CONFIG
 AWS_STORAGE_BUCKET_NAME = 'scraps3'
-AWS_ACCESS_KEY_ID = 'AKIA6DXHTVMYQOQ5RTEV'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = config('access_key_id')
+AWS_SECRET_ACCESS_KEY = config('access_key')
 AWS_QUERYSTRING_AUTH = False
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = config('file_Storage')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
